@@ -55,6 +55,7 @@ simulated_voting_data <-
 head(simulated_voting_data)
 
 
+
 #### Acquire #### 
 library(tidyverse)
 
@@ -71,12 +72,9 @@ write_csv(
 # Viewing the first few rows of the dataset
 head(voting_record)
 
-
-
 library(tidyverse)
 library(janitor)
 library(lubridate)
-
 # Load the data and show the column names
 voting_record <- read_csv("member-voting-record-2018-2022.csv")
 colnames(voting_record)
