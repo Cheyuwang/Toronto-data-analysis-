@@ -5,108 +5,66 @@ author:
 thanks: "Code and data are available at: https://github.com/Cheyuwang/Toronto-data-analysis-/tree/main/input%20/skatches."
 date: 2024/01/22
 date-format: long
-abstract: "First sentence. Second sentence. Third sentence. Fourth sentence."
+abstract: "This study examines the voting records of Toronto City Council members from 2018 to 2022, a period highlighted by substantial political and social changes. The dataset is used to calculate voting trends, attendance, and council member alignment. This study uses substantial data processing and analysis to uncover voting patterns and council political dynamics. The analysis focuses on decision-making tendencies, important votes, and the relationships between council members' votes and political factors. These findings provide insight into Toronto municipal governance, enriching local politics. "
 format: pdf
 number-sections: true
 bibliography: references.bib
 ---
 
+# Introduction
+
+This study examines the voting behaviors of Toronto City Council members from 2018 to 2022, focusing on their participation rates, vote results and external factors influencing voting decisions. The analysis uses a dataset in R studio [@citeR] and rigorous data cleaning, transformation, and statistical techniques to interpret complex voting patterns. However, the analysis will also incudes tables and bar chart. The study's goal is to determine the consistency and variety in members participation and decisions, as well as to identify any links between voting patterns and political affiliations or external influences. 
+
+
+
+
 ```{r}
-#| include: false
+#| echo: false
 #| warning: false
 #| message: false
+#| tbl-cap: Voting results
+#| label: tbl-voting
 
 ### Working setup
 #install.packages("here")
 
 #### Acquire #### 
+library(knitr)
 library(tidyverse)
 library(janitor) # Load the 'janitor' library for 'clean_names()'
-
 # Data sources 2.3.3 https://tellingstorieswithdata.com/02-drinking_from_a_fire_hose.html 
-
 # Regenerate the dataset by each person's voting results 
 # Load the data and show the column names
+
 voting_record <- read_csv(
   here::here("outputs/data/processed_voting_record_clean.csv"), # Correct usage of 'here' function
   show_col_types = FALSE
 ) # Added closing parenthesis
-colnames(voting_record)
 
-# Clean and transform the data
-voting_record_clean <- 
-  voting_record %>%
-  clean_names()
-
-# Display the cleaned data
-head(voting_record_clean)
-
-# Write the cleaned data to a new CSV file
-write_csv(
-  x = voting_record_clean, # Use the cleaned data
-  file = "processed_voting_record_clean.csv"
-)
-
-```
-
-
-# Introduction
-
-You can and should cross-reference sections and sub-sections. 
-
-The remainder of this paper is structured as follows. @sec-data....
-
-
-
-# Data {#sec-data}
-
-We then create a summary statistic on the basis of monthly groups, using summarise() from dplyr. We use kable() from knitr to create Table 2.1. 
-
-```{r}
-
-
-library(knitr)
-
-
-
-
-# View a few entries of the Date/Time column
-print(head(voting_record$`Date/Time`))
-
-# Replace 'correct_date_parsing_function' with the appropriate function from lubridate
-voting_record_clean <- voting_record %>%
-  mutate(month_column = month(correct_date_parsing_function(`Date/Time`), label = TRUE, abbr = FALSE)) %>%
-  group_by(month_column) %>%
-  summarise(votes_count = n()) %>%
-  kable()
-
-# Print the table
-print(voting_record_clean)
-
-```
-
-Talk more about it.
-
-And also planes (@fig-planes). (You can change the height and width, but don't worry about doing that until you have finished every other aspect of the paper - Quarto will try to make it look nice and the defaults usually work well once you have enough text.)
-
-```{r}
-#| label: fig-planes
-#| fig-cap: Relationship between wing length and width
-#| echo: false
-#| warning: false
-#| message: false
-library(tidyverse)
-
-# Load the data
-voting_record <- read_csv("outputs/data/processed_voting_record_clean.csv", show_col_types = FALSE)
 
 # Process the data - adjust this part based on your dataset
 # Assuming there are columns named 'First Name', 'Last Name', and 'Vote'
 voting_summary <- voting_record %>%
-  unite("Member", `First Name`, `Last Name`, sep = " ") %>%
-  filter(Vote == "Yes") %>%
-  count(Member)
+  unite("Member", `first_name`, `last_name`, sep = " ") %>%
+  filter(vote == "Yes") %>%
+  count(Member) %>%
+  arrange(-n) %>%
+  slice(1:5)
 
+kable(voting_summary)
+```
+
+
+
+refer to @fig_1  Source 2.33 [@alexander2023telling]
+
+```{r}
+#| echo: false
+#| warning: false
+#| message: false
+#| fig-cap: Voting results
+#| label: fig-voting
+#| 
 # Create the bar chart
 ggplot(voting_summary, aes(x = Member, y = n)) +
   geom_bar(stat = "identity", fill = "blue") +
@@ -116,32 +74,14 @@ ggplot(voting_summary, aes(x = Member, y = n)) +
     y = "Number of 'Yes' Votes"
   ) +
   theme_minimal() 
-
 ```
+Figure.1 
 
-Talk way more about it. 
+# Data {#sec-data}
 
+In this cases, since their's multiple voting results, I picked the five highest voting results from the multiple candidate. However, we can conclude that the gap between the five highest voting results for candidate are really close, so is mean the term "close candidate votes" refers to an election outcome in which the leading candidates obtain almost identical numbers of votes, resulting in a tight margin of victory. @tbl-voting @fig-voting 
 
-
-
-
-
-
-
-
-
-
-
-\newpage
-
-\appendix
-
-# Appendix {-}
-
-
-# Additional data details
-
-
+The way I created this table by the [@knitr]  to created the table and bar chart. From the Bar plot firgure 1, we see the the same results from the tables that Mike Layton having highest votes in this election. 
 
 
 
@@ -149,5 +89,10 @@ Talk way more about it.
 
 
 # References
+
+[@citeR]
+[@janitor]
+[@opendatatoronto]
+
 
 
