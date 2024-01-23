@@ -72,6 +72,8 @@ write_csv(
 # Viewing the first few rows of the dataset
 head(voting_record)
 
+
+
 library(tidyverse)
 library(janitor)
 library(lubridate)
@@ -96,6 +98,27 @@ write_csv(
 
 
 
+library(tidyverse)
+
+# Load the data
+voting_record <- read_csv("outputs/data/processed_voting_record_clean.csv", show_col_types = FALSE)
+
+# Process the data - adjust this part based on your dataset
+# Assuming there are columns named 'First Name', 'Last Name', and 'Vote'
+voting_summary <- voting_record %>%
+  unite("Member", `First Name`, `Last Name`, sep = " ") %>%
+  filter(Vote == "Yes") %>%
+  count(Member)
+
+# Create the bar chart
+ggplot(voting_summary, aes(x = Member, y = n)) +
+  geom_bar(stat = "identity", fill = "blue") +
+  labs(
+    title = "Count of 'Yes' Votes by Toronto City Council Members",
+    x = "Council Member",
+    y = "Number of 'Yes' Votes"
+  ) +
+  theme_minimal() 
 
 
 
