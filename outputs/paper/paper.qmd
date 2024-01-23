@@ -1,5 +1,5 @@
 ---
-title: "Data of members of Toronto City Council - Voting Recorde"
+title: "Data of members of Toronto City Council - Voting voting result"
 author: 
   - Che-Yu Wang
 thanks: "Code and data are available at: https://github.com/Cheyuwang/Toronto-data-analysis-/tree/main/input%20/skatches."
